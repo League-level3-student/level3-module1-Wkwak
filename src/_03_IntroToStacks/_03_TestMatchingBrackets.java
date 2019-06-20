@@ -9,6 +9,8 @@ import org.junit.Test;
 
 public class _03_TestMatchingBrackets {
 	Stack<String> stack = new Stack<String>();
+	int countOpen = 0;
+	int countClosed = 0;
 
 	@Test
 	public void testMatchingBrackets() {
@@ -28,7 +30,17 @@ public class _03_TestMatchingBrackets {
 			for (int i = 0; i < b.length(); i++) {
 				stack.push(String.valueOf(b.charAt(i)));
 			}
-			String 
+			while(!stack.isEmpty()) {
+				String check = stack.pop();	
+				if(check.equals("{")){
+					countOpen++;
+				}else {
+					countClosed++;
+				}
+			}
+			if(countOpen!=countClosed) {
+				allPaired = false;
+			}
 		}
 		return allPaired;
 	}
