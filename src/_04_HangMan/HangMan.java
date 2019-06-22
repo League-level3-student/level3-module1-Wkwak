@@ -15,19 +15,18 @@ public class HangMan implements KeyListener {
 	JFrame frame = new JFrame("Hangman");
 	JLabel label = new JLabel();
 	static String labelText = "";
-	static int lives = 10;
+	static int lives = 5;
 	String input = "";
-	String unknown;
+	static String unknown = "";
 	static String actualWord = "";
 	static Stack<String> words = new Stack<String>();
 
 	public static void main(String[] args) {
-		HangMan hman = new HangMan();
 		
+		HangMan hman = new HangMan();
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Type in a number of words");
-		System.out.println("You have " + lives + " guesses before you lose");
 		int num = scanner.nextInt();
 
 		Utilities util = new Utilities();
@@ -39,7 +38,19 @@ public class HangMan implements KeyListener {
 				words.push(wordToBeAdded);
 			}
 		}
-		actualWord = words.pop();
+		
+		String wordPushed = words.pop();
+		hman.GUI(wordPushed);
+		while(!words.isEmpty()) {
+			if(labelText.equals(wordPushed)) {
+				labelText = "";
+				lives = 5; 
+				wordPushed = words.pop();
+				hman.GUI(wordPushed);
+			}
+		}
+		
+
 		
 	}
 
@@ -73,9 +84,10 @@ public class HangMan implements KeyListener {
 
 		if (unknown.indexOf(input) == -1) {
 			System.out.println("That letter is not in the word");
+			System.out.println("You have " + lives + " guess(es) before you lose");
 			lives--;
 		} else if (unknown.contains(input)) {
-			System.out.println("yes");
+			System.out.println("Correct");
 			for (int i = 0; i < unknown.length(); i++) {
 				if (unknown.charAt(i) == e.getKeyChar()) {
 					labelText = labelText.substring(0, i) + input + labelText.substring(i+1);
@@ -83,15 +95,16 @@ public class HangMan implements KeyListener {
 			}
 			label.setText(labelText);
 		}
-		if(lives ==0) {
-			//JOptionPane.showMessageDialog(frame, "You Lost");
+		if(lives == 0) {
+			JOptionPane.showMessageDialog(frame, "You Lost, Press 1 to restart");
+			Scanner scanner = new Scanner(System.in);
+			int userVal = scanner.nextInt();
+			if(userVal == 1) {
+				//RESTARTING the program
+				lives = 5; 
+				HangMan hman = new HangMan();
+			}
 		}
-		
-		if(labelText.equals(actualWord) && e.getKeyCode()==KeyEvent.VK_ENTER) {
-			labelText="";
-			label.setText(words.pop());
-		}
-
 	}
 
 	@Override
