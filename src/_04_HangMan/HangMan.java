@@ -15,7 +15,7 @@ public class HangMan implements KeyListener {
 	JFrame frame = new JFrame("Hangman");
 	JLabel label = new JLabel();
 	static String labelText = "";
-	static int lives = 5;
+	static int lives = 10;
 	String input = "";
 	static String unknown = "";
 	static String actualWord = "";
@@ -44,20 +44,17 @@ public class HangMan implements KeyListener {
 		while(!words.isEmpty()) {
 			if(labelText.equals(wordPushed)) {
 				labelText = "";
-				lives = 5; 
+				lives = 10; 
 				wordPushed = words.pop();
 				hman.GUI(wordPushed);
 			}
 		}
-		
 
-		
 	}
 
 	public void GUI(String word) {
 		frame.setSize(300, 300);
 		frame.add(label);
-
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(this);
 		
@@ -81,28 +78,26 @@ public class HangMan implements KeyListener {
 		// TODO Auto-generated method stub
 		input = String.valueOf(e.getKeyChar());
 		System.out.println(input);
-
-		if (unknown.indexOf(input) == -1) {
-			System.out.println("That letter is not in the word");
-			System.out.println("You have " + lives + " guess(es) before you lose");
-			lives--;
-		} else if (unknown.contains(input)) {
-			System.out.println("Correct");
-			for (int i = 0; i < unknown.length(); i++) {
-				if (unknown.charAt(i) == e.getKeyChar()) {
-					labelText = labelText.substring(0, i) + input + labelText.substring(i+1);
-				}
-			}
-			label.setText(labelText);
-		}
-		if(lives == 0) {
+		
+		if(lives <= 1) {
 			JOptionPane.showMessageDialog(frame, "You Lost, Press 1 to restart");
-			Scanner scanner = new Scanner(System.in);
-			int userVal = scanner.nextInt();
-			if(userVal == 1) {
+			if(e.getKeyCode()==49 || e.getKeyCode() == 97) {
 				//RESTARTING the program
-				lives = 5; 
-				HangMan hman = new HangMan();
+				
+			}
+		} else {
+			if (unknown.indexOf(input) == -1) {
+				System.out.println("That letter is not in the word");
+				lives--;
+				System.out.println("You have " + lives + " guess(es) before you lose");
+			} else if (unknown.contains(input)) {
+				System.out.println("Correct");
+				for (int i = 0; i < unknown.length(); i++) {
+					if (unknown.charAt(i) == e.getKeyChar()) {
+						labelText = labelText.substring(0, i) + input + labelText.substring(i+1);
+					}
+				}
+				label.setText(labelText);
 			}
 		}
 	}
