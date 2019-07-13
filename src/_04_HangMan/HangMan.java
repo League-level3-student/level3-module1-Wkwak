@@ -18,12 +18,11 @@ public class HangMan implements KeyListener {
 	static int lives = 10;
 	String input = "";
 	static String unknown = "";
-	static String actualWord = "";
 	static Stack<String> words = new Stack<String>();
+	static HangMan hman = new HangMan();
+	static int timesLost = 0;
 
 	public static void main(String[] args) {
-		
-		HangMan hman = new HangMan();
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Type in a number of words");
@@ -80,10 +79,11 @@ public class HangMan implements KeyListener {
 		System.out.println(input);
 		
 		if(lives <= 1) {
-			JOptionPane.showMessageDialog(frame, "You Lost, Press 1 to restart");
+			JOptionPane.showMessageDialog(frame, "You Lost, Press 1 to continue");
 			if(e.getKeyCode()==49 || e.getKeyCode() == 97) {
 				//RESTARTING the program
-				
+				lives = 10;
+				timesLost++;
 			}
 		} else {
 			if (unknown.indexOf(input) == -1) {
